@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.cwnu.modules.sys.dao.SysDictDao">
+
+	<select id="queryObject" resultType="cn.cwnu.modules.sys.entity.SysDictEntity">
+		select * from sys_dict where id = #{value}
+	</select>
+	<select id="queryGroupList" resultType="cn.cwnu.modules.sys.entity.SysDictEntity">
+		select * from sys_dict where dict_type = 0
+	</select>
+	<select id="queryList" resultType="cn.cwnu.modules.sys.entity.SysDictEntity">
+		select * from sys_dict
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from sys_dict 
+	</select>
+
+	<select id="selectDictsByCode" resultType="String" parameterType="String">
+		select s.name from sys_dict s where s.parent_id = (select d.id from sys_dict d where d.code = #{code})
+	</select>
+	 
+	<insert id="save" parameterType="cn.cwnu.modules.sys.entity.SysDictEntity">
+		insert into sys_dict
+		(
+			`id`, 
+			`parent_id`,
+			`parent_name`,
+			`name`,
+			`dict_type`,
+			`remarks`,
+			`code`
+		)
+		values
+		(
+			#{id}, 
+			#{parentId},
+			#{parentName},
+			#{name},
+			#{dictType},
+			#{remarks},
+			#{code}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="cn.cwnu.modules.sys.entity.SysDictEntity">
+		update sys_dict 
+		<set>
+			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="parentName != null">`parent_name` = #{parentName}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="dictType != null">`dict_type` = #{dictType}, </if>
+			<if test="remarks != null">`remarks` = #{remarks}, </if>
+			<if test="code != null">`code` = #{code}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from sys_dict where id = #{value}
+	</delete>
+	<delete id="deleteByParentId" parameterType="String">
+		delete from sys_dict where parent_id = #{id}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from sys_dict where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

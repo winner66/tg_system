@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cwnu.modules.sys.dao.BackupDao">
+
+	<!--查询所有备份信息-->
+	<select id="queryList" resultType="cn.cwnu.modules.sys.entity.BackupEntity">
+		select * from `backup_info`
+		WHERE 1 = 1
+		<if test='searchText != null and searchText != "" '>
+			AND (backup_name = #{searchText} OR time LIKE  CONCAT('%',#{searchText},'%'))
+		</if>
+		ORDER BY id DESC
+	</select>
+
+	<insert id="save" parameterType="cn.cwnu.modules.sys.entity.BackupEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into `backup_info`
+		(
+			`instance_id`,
+			`type`,
+			`size`,
+			`strategy`,
+			`time`,
+			`host`,
+			`port`,
+			`backup_name`,
+			`url`
+		)values(
+			#{instanceId},
+			#{type},
+			#{size},
+			#{strategy},
+			#{time},
+			#{host},
+			#{port},
+			#{backupName},
+			#{url}
+		)
+	</insert>
+
+	<delete id="delete">
+		delete from `backup_info` where id = #{value}
+	</delete>
+</mapper>

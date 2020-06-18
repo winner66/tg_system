@@ -1,0 +1,36 @@
+# Tomcat
+server:
+    tomcat:
+        uri-encoding: UTF-8
+    port: 8080
+    servlet:
+        context-path: /tg_system
+upload:
+    file-directory: D:/temp-tg/file
+
+spring:
+    # 环境 dev|test|pro
+    profiles:
+        active: dev
+    # jackson时间格式化
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+    http:
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 100MB
+            enabled: true
+    # 指定静态资源的路径
+    resources:
+        static-locations: classpath:/static/,classpath:/views/,file:${upload.file-directory}
+
+# Mybatis配置
+mybatis:
+    mapperLocations: classpath:mapper/**/*.xml
+    configLocation: classpath:mybatis.xml
+
+jasypt:
+    encryptor:
+        password: tg_system
+        bean: jasyptStringEncryptor
