@@ -2,7 +2,6 @@ package cn.cwnu.common.utils;
 
 import cn.cwnu.common.xss.SQLFilter;
 import org.apache.commons.lang.StringUtils;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 

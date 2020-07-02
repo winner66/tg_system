@@ -11,10 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "upload")
 public class FileStorageProperties {
-
     private String fileDirectory;
     private boolean keepName;
-
     public boolean isKeepName() {
         return keepName;
     }

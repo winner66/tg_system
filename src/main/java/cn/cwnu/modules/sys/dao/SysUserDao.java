@@ -44,6 +44,8 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
      * @return
      */
     void useBatch(Integer[] userIds);
+    void use(Integer id);
+
 
     /**
      * 禁用用户
@@ -52,7 +54,7 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
      * @return
      */
     void banBatch(Integer[] userIds);
-
+    void ban(Integer id);
     /**
      * 条件查询用户
      *

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cwnu.modules.sys.dao.ClientUserDao">
+
+    <!--查询所有用户信息-->
+    <select id="queryInfoList" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
+        select * from `client_user`
+        WHERE 1 = 1
+        <if test='searchText != null and searchText != "" '>
+            AND (account = #{searchText} OR username = #{searchText} OR id_card = #{searchText})
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <!--数据批量保存-->
+<!--    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO `client_user`
+        (department_name, username, personnel_code, job_title, administrative_duties, post_setting, personnel_category)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.departmentName}, #{item.username}, #{item.personnelCode}, #{item.jobTitle},
+            #{item.administrativeDuties}, #{item.postSetting}, #{item.personnelCategory})
+        </foreach>
+    </insert>-->
+
+    <!--删除数据-->
+    <delete id="delete">
+		delete from `client_user` where id = #{value}
+	</delete>
+
+    <!--禁用用户-->
+    <update id="ban" parameterType="int">
+        update `client_user` set status = 0 where id = #{id}
+    </update>
+
+    <!--激活用户-->
+    <update id="use" parameterType="int">
+        update `client_user` set status = 1 where id = #{id}
+    </update>
+</mapper>

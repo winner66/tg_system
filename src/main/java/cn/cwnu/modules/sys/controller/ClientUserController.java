@@ -38,8 +38,10 @@ public class ClientUserController {
         List<ClientUserEntity> clientUserList = clientUserService.queryList(searchText);
         //封装json对象返回,bootstrap-table client分页方式需要data字符
         JSONObject result = new JSONObject();
+        result.put("code", 0);
+        result.put("msg", "");
         result.put("data", clientUserList);
-        result.put("total", clientUserList.size());
+        result.put("count", clientUserList.size());
         return result.toJSONString();
     }
 
@@ -74,12 +76,12 @@ public class ClientUserController {
      * @param entity
      * @return
      */
-//    @PostMapping("/save")
-//    @RequiresPermissions("sys:clientUser:add")
-//    public R save(@RequestBody ClientUserEntity entity) {
-//        clientUserService.save(entity);
-//        return R.ok();
-//    }
+    @PostMapping("/save")
+    @RequiresPermissions("sys:clientUser:add")
+    public R save(@RequestBody ClientUserEntity entity) {
+        clientUserService.save(entity);
+        return R.ok();
+    }
 
 
     /**

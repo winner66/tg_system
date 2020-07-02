@@ -4,11 +4,15 @@ import cn.cwnu.common.annotation.SysLog;
 import cn.cwnu.common.utils.Constant;
 import cn.cwnu.common.utils.R;
 import cn.cwnu.modules.sys.entity.SysDeptEntity;
+import cn.cwnu.modules.sys.entity.organizationTree;
+import cn.cwnu.modules.sys.organization;
 import cn.cwnu.modules.sys.service.SysDeptService;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +36,36 @@ public class SysDeptController extends AbstractController {
         List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<>());
         return deptList;
     }
+    @RequestMapping("/deptTree/{pid}")
+    public String deptTree(@PathVariable("pid") Long id){
+        JSONObject result = new JSONObject();
+        System.out.println("1111---");
+        organizationTree tree=new organizationTree();
+        tree.setId(1L);
+        tree.setPid(0L);
+        tree.setTitle("123");
+        List<organizationTree> chils= new ArrayList<>();
+        organizationTree e1=new organizationTree();
+        e1.setId(2L);
+        e1.setPid(1L);
+        e1.setTitle("456");
+        chils.add(e1);
+        List<organizationTree> res =new ArrayList<organizationTree>();
+        res.add(tree);
+
+        tree.setChildren(chils);
+//        测试数据
+
+//        List<organizationTree> deptTree= organization.Json_GetDepartmentTree(id);
+        System.out.println("1111");
+//        System.out.println(deptTree.toString());
+//         result.put("data", deptTree);
+        result.put("data", res);
+        System.out.println(result.toJSONString());
+        return result.toJSONString();
+    }
+
+
 
     /**
      * 选择机构(添加、修改菜单)

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="keywords" contect="网络投稿管理系统"/>
+    <meta name="description" contect="网络投稿管理系统"/>
+    <title>登录</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="body" id="l-login">
+    <div class="body_count">
+        <div class="login_count">
+            <div class="login_count_a">
+                <div class="login_count_a_l">
+                    <div class="login_a_l_t">扫码登录点这里</div>
+                    <div class="triangle"></div>
+                    <img src="img/scan.png" class="icon_e" alt=""/>
+                </div>
+                <div id="all">
+                    <ul id="option">
+                        <li class="active login_left">密码登录</li>
+                        <li class="login_right">账号登录</li>
+                    </ul>
+                    <ul id="card">
+                        <li class="active">
+                            <div class="login_bot_count">
+                                <img src="img/name.png"/>
+                                <input type="text" v-model="username" onfocus="this.placeholder=''"
+                                       onblur="this.placeholder='请输入账号'" placeholder="请输入账号"/>
+                            </div>
+                            <div class="login_bot_count">
+                                <img src="img/password.png"/>
+                                <input type="password" v-model="password" onfocus="this.placeholder=''"
+                                       onblur="this.placeholder='请输入密码'" placeholder="请输入密码"/>
+                            </div>
+                            <div class="login_bot">
+                                <a>忘记密码?</a>
+                                <p>Android下载</p>
+                            </div>
+                            <button class="btn btn-info btn-block" @click="login">登录</button>
+                        </li>
+                        <li class="login_account">
+                            <div class="login_account_count">
+                                <img src="img/name.png" alt=""/>
+                                <select class="account_select">
+                                    <option value="+86">+86</option>
+                                    <option value="+111">+111</option>
+                                    <option value="+222">+222</option>
+                                    <option value="+333">+333</option>
+                                </select>
+                                <img src="img/line-down.png" alt="" class="account_select_icon"/>
+                                <input type="" name="" class="mobile_input" placeholder="请输入手机号码" id="aa"/>
+                            </div>
+                            <div class="login_account_counts">
+                                <img src="img/password.png" alt=""/>
+                                <input type="" name="" id="" placeholder="请输入验证码"/>
+                                <input class="account_code" type="button" id="btn" value="获取验证码"/>
+                            </div>
+                            <button class="btn btn-info btn-block" >登录</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="login_count_b">
+                <div class="login_count_b_l">
+                    <div class="login_b_l_t">账号登录点这里</div>
+                    <div class="triangle"></div>
+                    <img src="img/name.png" class="icon_z"/>
+                </div>
+                <div class="login_b_title">
+                    <img src="img/weixin.png" alt=""/> 微信扫码登录
+                </div>
+                <img src="img/ewm.png" class="libqr"/>
+                <p class="libqr_text">请使用微信扫描二维码登录</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="libs/jquery.min.js"></script>
+<script src="plugins/layer/layer.js"></script>
+<script src="libs/vue.min.js"></script>
+<script src="js/base.js"></script>
+<script src="js/login.js"></script>
+</html>

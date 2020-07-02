@@ -73,7 +73,7 @@ public interface SysUserService {
      * @return
      */
     void banBatch(Integer[] userIds);
-
+    void ban(Integer id);
     /**
      * 激活用户
      *
@@ -81,7 +81,7 @@ public interface SysUserService {
      * @return
      */
     void useBatch(Integer[] userIds);
-
+    void use(Integer id);
     /**
      * 条件查询用户
      *

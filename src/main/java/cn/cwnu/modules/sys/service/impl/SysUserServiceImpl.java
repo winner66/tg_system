@@ -137,7 +137,9 @@ public class SysUserServiceImpl implements SysUserService {
     public void banBatch(Integer[] userIds) {
         sysUserDao.banBatch(userIds);
     }
-
+    public void ban(Integer id) {
+        sysUserDao.ban(id);
+    }
     /**
      * 激活用户
      *
@@ -149,7 +151,9 @@ public class SysUserServiceImpl implements SysUserService {
     public void useBatch(Integer[] userIds) {
         sysUserDao.useBatch(userIds);
     }
-
+    public void use(Integer id) {
+        sysUserDao.use(id);
+    }
     /**
      * 条件查询用户
      *

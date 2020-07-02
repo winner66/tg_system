@@ -77,8 +77,9 @@ public class SysRoleController extends AbstractController {
                 return R.ok().put("list", list);
             }
         }
+        System.out.println(getUserId());
         List<SysRoleEntity> list = sysRoleService.queryList(map);
-
+        System.out.println(list);
         return R.ok().put("list", list);
     }
 

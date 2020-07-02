@@ -1,6 +1,7 @@
 package cn.cwnu.modules.sys.dao;
 
 import cn.cwnu.modules.sys.entity.SysDeptEntity;
+import cn.cwnu.modules.sys.entity.organizationTree;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ public interface SysDeptDao extends BaseDao<SysDeptEntity> {
      */
     List<Long> queryDetpIdList(Long parentId);
 
+    List<organizationTree> queryObjectByParentId(Long parentId);
     /**
      * 查询子机构数量
      *

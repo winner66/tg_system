@@ -49,7 +49,6 @@ public class SysRoleServiceImpl implements SysRoleService {
     public void save(SysRoleEntity role) {
         role.setCreateTime(new Date());
         sysRoleDao.save(role);
-
         //保存角色与菜单关系
         sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
 
@@ -68,7 +67,6 @@ public class SysRoleServiceImpl implements SysRoleService {
         //保存角色与部门关系
         sysRoleDeptService.saveOrUpdate(role.getRoleId(), role.getDeptIdList());
     }
-
     @Override
     @Transactional(rollbackFor = RRException.class)
     public void deleteBatch(Long[] roleIds) {
@@ -76,7 +74,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     /**
-     * 查询指定管理者角色
+     * 查询指定管理者角色  0/1
      *
      * @return
      * @param identityId

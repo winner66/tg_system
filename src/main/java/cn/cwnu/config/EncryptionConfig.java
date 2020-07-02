@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class EncryptionConfig {
-
     @Bean("jasyptStringEncryptor")
     public StringEncryptor stringEncryptor() {
         DESEncrypt desEncrypt = new DESEncrypt();
