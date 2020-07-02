@@ -39,28 +39,27 @@ public class SysDeptController extends AbstractController {
     @RequestMapping("/deptTree/{pid}")
     public String deptTree(@PathVariable("pid") Long id){
         JSONObject result = new JSONObject();
-        System.out.println("1111---");
-        organizationTree tree=new organizationTree();
-        tree.setId(1L);
-        tree.setPid(0L);
-        tree.setTitle("123");
-        List<organizationTree> chils= new ArrayList<>();
-        organizationTree e1=new organizationTree();
-        e1.setId(2L);
-        e1.setPid(1L);
-        e1.setTitle("456");
-        chils.add(e1);
-        List<organizationTree> res =new ArrayList<organizationTree>();
-        res.add(tree);
-
-        tree.setChildren(chils);
+//        System.out.println("1111---");
+//        organizationTree tree=new organizationTree();
+//        tree.setId(1L);
+//        tree.setPid(0L);
+//        tree.setTitle("123");
+//        List<organizationTree> chils= new ArrayList<>();
+//        organizationTree e1=new organizationTree();
+//        e1.setId(2L);
+//        e1.setPid(1L);
+//        e1.setTitle("456");
+//        chils.add(e1);
+//        List<organizationTree> res =new ArrayList<organizationTree>();
+//        res.add(tree);
+//        tree.setChildren(chils);
+//        result.put("data", res);
 //        测试数据
 
-//        List<organizationTree> deptTree= organization.Json_GetDepartmentTree(id);
+        List<organizationTree> deptTree= organization.Json_GetDepartmentTree(id);
         System.out.println("1111");
-//        System.out.println(deptTree.toString());
-//         result.put("data", deptTree);
-        result.put("data", res);
+         result.put("data", deptTree);
+
         System.out.println(result.toJSONString());
         return result.toJSONString();
     }
