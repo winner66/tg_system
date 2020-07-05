@@ -70,18 +70,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     @Transactional(rollbackFor = RRException.class)
     public void save(SysUserEntity user) {
-        user.setCreateTime(DateUtils.formatDate(new Date()));
-        //sha256加密
-        String salt = RandomStringUtils.randomAlphanumeric(Constant.SALT_LENGTH);
-        user.setPassword(new Sha256Hash(user.getPassword(), salt).toHex());
-        user.setSalt(salt);
-        user.setIdentity(Constant.adminType(user.getIdentityId()));
-        user.setOnline(0);
-
-        System.out.println(user);
-        sysUserDao.save(user);
-        //保存用户与角色关系
-        sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleIdList());
+      sysUserDao.save(user);
     }
 
     /**

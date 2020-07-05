@@ -13,5 +13,8 @@ public class organizationTree implements Serializable {
     private  Long  pid;
     private  String title;
     private List<organizationTree> children;
+    private boolean disabled;
+//    组/机构 ：  0/1
+    private  int type;
 
 }

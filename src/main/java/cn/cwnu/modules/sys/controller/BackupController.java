@@ -7,6 +7,7 @@ import cn.cwnu.common.utils.R;
 import cn.cwnu.modules.sys.entity.BackupEntity;
 import cn.cwnu.modules.sys.service.BackupService;
 import com.alibaba.fastjson.JSONObject;
+import io.swagger.annotations.Api;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/backup")
+@Api("BackupController")
 public class BackupController {
 /*
     @Autowired

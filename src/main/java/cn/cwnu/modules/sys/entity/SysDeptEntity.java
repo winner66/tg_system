@@ -1,5 +1,7 @@
 package cn.cwnu.modules.sys.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * 机构管理
  * @author zgl
  */
+
 public class SysDeptEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 

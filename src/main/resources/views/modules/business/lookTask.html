@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <title>查看任务</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="../../libs/jquery.min.js"></script>
+    <script src="../../libs/bootstrap.min.js"></script>
+    <script src="../../libs/vue.min.js"></script>
+
+    <script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+    <!--layui-v2.5.5-->
+    <link rel="stylesheet" href="../../plugins/layui-v2.5.5/layui/css/layui.css" media="all">
+    <script src="../../plugins/layui-v2.5.5/layui/layui.all.js" charset="utf-8"></script>
+    <script src="../../plugins/layui-v2.5.5/layui/layui.js"></script>
+    <!--layer-v3.1.1-->
+    <script src="../../plugins/layer-v3.1.1/layer/layer.js" charset="utf-8"></script>
+    <!--laydate-v5.0.9-->
+    <link rel="stylesheet" href="../../plugins/layDate-v5.0.9/laydate/theme/default/laydate.css">
+    <script src="../../plugins/layDate-v5.0.9/laydate/laydate.js" charset="utf-8"></script>
+    <!--bootstrap-3.3.7-->
+    <link rel="stylesheet" href="../../plugins/bootstrap-3.3.7-dist/css/bootstrap.css" media="all">
+    <script src="../../plugins/bootstrap-3.3.7-dist/js/bootstrap.js" charset="utf-8"></script>
+</head>
+
+<body>
+<blockquote class="layui-elem-quote layui-text">
+    评论投稿-任务列表-查看任务
+</blockquote>
+<div id="app">
+    <center><button type="button" class="layui-btn layui-btn-primary" v-on:click="back">返回</button></center>
+    <div class="panel panel-success">
+        <div class="panel-heading">【{{sites.bid}}】 {{sites.taskname}}</div>
+        <div class="panel-body">
+            <p>发布时间：{{sites.createtime}} | 创建人 {{sites.fabup}}</p>
+            <p style="color: #ebb563">{{name}}</p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    任务状态:
+                    <span v-if="sites.taskstatus == 0" style="color: #ebb563">
+                        已发布
+                    </span>
+                    <span v-else>
+                        已完成
+                    </span>
+                </div>
+                <div class="layui-inline">
+                    贴文提交数:{{sites.counte}}
+                </div>
+                <div class="layui-inline">
+                    任务奖励:{{sites.reward}}
+                </div><br>
+                <div class="layui-inline">
+                    单人上限:{{sites.pertoplimit}}
+                </div>
+                <div class="layui-inline">
+                    开始时间:{{sites.starttime}}
+                </div>
+                <div class="layui-inline">
+                    结束时间:{{sites.endtime}}
+                </div><br>
+                <div class="layui-inline">
+                    接受/发送:{{sites.countj}}/{{sites.countf}}
+                </div>
+                <div class="layui-inline">
+                    任务下限:{{sites.taskbelimit}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">任务详情</div>
+        <div class="panel-body">
+            <p>{{sites.taskreq}}</p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+           <p>附件</p>
+            <span v-for="site in imgs">
+                <img v-on:click="fd(site)" :src="'http://localhost:8080/tg_system/'+site"  width="100"/>
+            </span>
+            <span v-for="sitt in files">
+                 <a :href="'http://localhost:8080/tg_system/'+sitt" :download="sitt"><i class="layui-icon layui-icon-file"></i>{{sitt}}下载 </a>
+            </span>
+        </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">任务完成情况汇总</div>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <td>序号</td>
+                    <td>组名</td>
+                    <td>文章数</td>
+                    <td>操作</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="../../js/modules/business/looktask.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/autoHeight.js"></script>
+</body>
+</html>

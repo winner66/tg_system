@@ -11,7 +11,20 @@
         </if>
         ORDER BY id DESC
     </select>
-
+    <select id="queryByGroup" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
+        select * from `client_user`
+        where type=0 and groupId= #{gid}
+    </select>
+<!--机构下的人-->
+    <select id="queryByDept" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
+        select * from `client_user`
+        where type=1 and deptId= #{id}
+    </select>
+<!--机构下所有人-->
+    <select id="queryAllByDept" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
+        select * from `client_user`
+        where deptId= #{id}
+    </select>
     <!--数据批量保存-->
 <!--    <insert id="batchInsert" parameterType="java.util.List">
         INSERT INTO `client_user`
@@ -22,6 +35,18 @@
             #{item.administrativeDuties}, #{item.postSetting}, #{item.personnelCategory})
         </foreach>
     </insert>-->
+
+    <insert id="save" parameterType="cn.cwnu.modules.sys.entity.ClientUserEntity" useGeneratedKeys="true">
+         INSERT INTO `client_user`
+        (`username`, `realname`, `account`, `password`,`salt`,
+         `status`, `create_time`,`update_time`,`login_time`,`remarks`,`phone`,
+         `groupId`,`dept`,`level`,`sex`,`email`,`bank`,`bank_num`,`address`,`type`,`deptId`)
+        VALUES(#{username},#{realname},#{account},#{password},#{salt},
+        #{status},#{createTime},#{updateTime},#{loginTime},#{remarks},#{phone},
+        #{groupId},#{dept},#{level},#{sex},#{email},#{bank},#{bankNum},#{address},#{type},#{deptId})
+    </insert>
+
+
 
     <!--删除数据-->
     <delete id="delete">

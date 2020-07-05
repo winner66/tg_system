@@ -2,15 +2,22 @@ package cn.cwnu.modules.business.controller;
 
 import cn.cwnu.common.utils.R;
 import cn.cwnu.modules.business.service.FileStorageService;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.mysql.jdbc.CharsetMapping.MAP_SIZE;
 
 /**
  * 文件上传
@@ -30,6 +37,7 @@ public class FileController {
      * @param request
      * @return
      */
+
     @PostMapping(value = "/uploadFile")
     public R uploadMultipleLicense(HttpServletRequest request) {
         MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
@@ -38,16 +46,15 @@ public class FileController {
 //        String id = params.getParameter("companyId");
 //        String name = params.getParameter("companyName");
 //        String flag = params.getParameter("flag");
-
         //多文件取值
         for (int i = 0; i < files.size(); ++i) {
             MultipartFile file = files.get(i);
             if (!file.isEmpty()) {
                 //文件保存到文件夹和数据库操作分开
                 String[] strFile = fileService.storeFile(file).split(",");
-
                 //文件名、文件地址、标记
                 //strFile[0], strFile[1], flag
+                return R.ok(strFile[0]);
             } else {
                 return R.error("文件上传失败");
             }

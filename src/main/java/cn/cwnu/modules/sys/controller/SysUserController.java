@@ -1,10 +1,7 @@
 package cn.cwnu.modules.sys.controller;
 
 import cn.cwnu.common.annotation.SysLog;
-import cn.cwnu.common.utils.Constant;
-import cn.cwnu.common.utils.PageUtils;
-import cn.cwnu.common.utils.Query;
-import cn.cwnu.common.utils.R;
+import cn.cwnu.common.utils.*;
 import cn.cwnu.common.validator.Assert;
 import cn.cwnu.common.validator.ValidatorUtils;
 import cn.cwnu.common.validator.group.AddGroup;
@@ -13,11 +10,13 @@ import cn.cwnu.modules.sys.entity.SysUserEntity;
 import cn.cwnu.modules.sys.service.SysUserRoleService;
 import cn.cwnu.modules.sys.service.SysUserService;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -105,8 +104,25 @@ public class SysUserController extends AbstractController {
     @RequestMapping("/save")
     @RequiresPermissions("sys:user:save")
     public R save(@RequestBody SysUserEntity user) {
-        ValidatorUtils.validateEntity(user, AddGroup.class);
+//        开启会报错
+//        ValidatorUtils.validateEntity(user, AddGroup.class);
+
+        user.setCreateTime(DateUtils.formatDate(new Date()));
+
+        //sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(Constant.SALT_LENGTH);
+        user.setPassword(new Sha256Hash(user.getPassword(), salt).toHex());
+        user.setSalt(salt);
+        user.setIdentity(Constant.adminType(user.getIdentityId()));
+        user.setOnline(0);
+        System.out.println(user);
+
         sysUserService.save(user);
+        //保存用户与角色关系
+//        System.out.println("save1");
+        sysUserRoleService.saveOrUpdate(user.getId(), user.getRoleIdList());
+//        System.out.println("save2");
+
         return R.ok();
     }
 

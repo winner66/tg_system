@@ -20,7 +20,10 @@ public interface ClientUserService {
      * @return
      */
     List<ClientUserEntity> queryList(String searchText);
+    List<ClientUserEntity> queryByGroup(Long id);
 
+    List<ClientUserEntity> queryByDept(Long id);
+    List<ClientUserEntity> queryAllByDept(Long id);
     /**
      * 批量保存
      *

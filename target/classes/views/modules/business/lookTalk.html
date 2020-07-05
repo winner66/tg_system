@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <title>审核稿件</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="../../libs/jquery.min.js"></script>
+    <script src="../../libs/bootstrap.min.js"></script>
+    <script src="../../libs/vue.min.js"></script>
+
+    <script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+    <!--layui-v2.5.5-->
+    <link rel="stylesheet" href="../../plugins/layui-v2.5.5/layui/css/layui.css" media="all">
+    <script src="../../plugins/layui-v2.5.5/layui/layui.all.js" charset="utf-8"></script>
+    <script src="../../plugins/layui-v2.5.5/layui/layui.js"></script>
+    <!--layer-v3.1.1-->
+    <script src="../../plugins/layer-v3.1.1/layer/layer.js" charset="utf-8"></script>
+    <!--laydate-v5.0.9-->
+    <link rel="stylesheet" href="../../plugins/layDate-v5.0.9/laydate/theme/default/laydate.css">
+    <script src="../../plugins/layDate-v5.0.9/laydate/laydate.js" charset="utf-8"></script>
+    <!--bootstrap-3.3.7-->
+    <link rel="stylesheet" href="../../plugins/bootstrap-3.3.7-dist/css/bootstrap.css" media="all">
+    <script src="../../plugins/bootstrap-3.3.7-dist/js/bootstrap.js" charset="utf-8"></script>
+</head>
+
+<body>
+<blockquote class="layui-elem-quote layui-text">
+    评论投稿-任务列表-审核稿件
+</blockquote>
+<div id="app">
+    <center><button type="button" class="layui-btn layui-btn-primary" v-on:click="back">返回</button></center>
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <p>【{{bid}}】{{name}}</p>
+            <p>链接：{{taskreq}}</p>
+        </div>
+        <div class="panel-body">
+            <p><h3>标题：{{sites.title}}</h3></p>
+            <p>姓名：{{sites.name}}</p>
+            <p>所属分组：{{sites.fenzu}}</p>
+            <p>提交事件：{{sites.createtime}}</p>
+            <p>链接：{{sites.url}}</p>
+            <p>状态：
+                <span style="color: yellow" v-if="sites.status==0">
+                    待审核
+                </span>
+                <span style="color: green" v-else-if="sites.status==1">
+                    通过
+                </span>
+                <span style="color: red" v-else>
+                    驳回
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p>附件</p>
+            <span v-for="site in imgs">
+                <img v-on:click="fd(site)" :src="'http://localhost:8080/tg_system/'+site"  width="100"/>
+            </span>
+            <span v-for="sitt in files">
+                 <a :href="'http://localhost:8080/tg_system/'+sitt" :download="sitt"><i class="layui-icon layui-icon-file"></i>{{sitt}}下载 </a>
+            </span>
+        </div>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">操作</div>
+        <div class="panel-body">
+            <button type="button" v-on:click="stop(sites.id)" class="layui-btn layui-btn-danger">驳回</button>
+            <button type="button" v-on:click="next(sites.id)"  class="layui-btn layui-btn-normal">下一条</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../js/modules/business/looktalk.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/autoHeight.js"></script>
+</body>
+</html>

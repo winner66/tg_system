@@ -22,8 +22,13 @@ public interface ClientUserDao {
      * @param searchText 查询条件
      * @return
      */
-    List<ClientUserEntity> queryInfoList(@Param("searchText") String searchText);
+    List<ClientUserEntity>  queryInfoList(@Param("searchText") String searchText);
 
+    List<ClientUserEntity>  queryByGroup(@Param("gid") Long gid);
+    List<ClientUserEntity>  queryByDept(@Param("id") Long id);
+    List<ClientUserEntity>  queryAllByDept(@Param("id") Long id);
+
+    void save(ClientUserEntity user);
     /**
      * 批量导入数据
      *

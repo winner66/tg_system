@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cwnu.modules.business.dao.BuComTalkDao">
+	<!--查询最大id-->
+	<select id="queryMAX" resultType="int">
+		select max(id) from bu_comtalk
+	</select>
+	<!--通过-->
+	<update id="pass" parameterType="int">
+		update bu_comtalk set status=1 where id = #{id}
+	</update>
+	<!--拒绝-->
+	<update id="stop"  parameterType="map">
+		update bu_comtalk set status=2,reason=#{param2} where id = #{param1}
+	</update>
+	<!--给奖励-->
+	<update id="reward"  parameterType="map">
+		update bu_comtalk set reward=#{param2} where id = #{param1}
+	</update>
+	<!--查询总量-->
+	<select id="queryAll" resultType="int">
+        select count(*) from bu_comtalk
+		<where>
+			<choose>
+				<when test="_parameter  != null and _parameter  != 0" >
+					taskid = #{taskid}
+				</when>
+			</choose>
+		</where>
+    </select>
+	<!--根据id查询-->
+	<select id="queryById" resultType="cn.cwnu.modules.business.entity.BuComTalkEntity">
+        select*from bu_comtalk where id=#{id}
+    </select>
+	<!--分页-->
+	<select id="pageList" resultType="cn.cwnu.modules.business.entity.BuComTalkEntity">
+		select * from bu_comtalk
+		<where>
+		<choose>
+			<when test="taskid != null and taskid != 0" >
+				taskid = #{taskid}
+			</when>
+		</choose>
+		</where>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<!--搜索-->
+	<select id="searchList" resultType="cn.cwnu.modules.business.entity.BuComTalkEntity">
+		select * from bu_comtalk
+		<where>
+			<if test="taskid != null and taskid!=0">
+				and `taskid` = #{taskid}
+			</if>
+			<if test="status != null and status!=3">
+				and `status` = #{status}
+			</if>
+			<if test="title != null and title.trim() != ''">
+				and `title` like concat('%',#{title},'%')
+			</if>
+			<if test="name != null and name.trim() != ''">
+				and `name` like concat('%',#{name},'%')
+			</if>
+			<if test="starttime != null and starttime.trim() != ''">
+				and `createtime` &gt;= #{starttime}
+			</if>
+			<if test="endtime != null and endtime.trim() != ''">
+				and `createtime` &lt;= #{endtime}
+			</if>
+		</where>
+		<if test="offset != null and limit != null and limit!=0">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+</mapper>

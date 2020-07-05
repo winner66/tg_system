@@ -10,24 +10,24 @@
 	<insert id="save" parameterType="cn.cwnu.modules.sys.entity.SysMenuEntity">
 		insert into sys_menu
 		(
-			`menu_id`, 
-			`parent_id`, 
-			`name`, 
-			`url`, 
-			`perms`, 
-			`type`, 
-			`icon`, 
+			`menu_id`,
+			`parent_id`,
+			`name`,
+			`url`,
+			`perms`,
+			`type`,
+			`icon`,
 			`order_num`
 		)
 		values
 		(
-			#{menuId}, 
-			#{parentId}, 
-			#{name}, 
-			#{url}, 
-			#{perms}, 
-			#{type}, 
-			#{icon}, 
+			#{menuId},
+			#{parentId},
+			#{name},
+			#{url},
+			#{perms},
+			#{type},
+			#{icon},
 			#{orderNum}
 		)
 	</insert>

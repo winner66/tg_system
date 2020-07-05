@@ -30,7 +30,7 @@
     </select>
 
     <select id="getList" resultType="cn.cwnu.modules.sys.entity.SysUserEntity">
-		select u.* from sys_user u where dept_id = #{deptId} and identity_id = #{identityId} and company_name = #{companyName}
+		select u.* from sys_user u where dept_id = #{deptId} and identity_id = #{identityId} and company_name = #{company}
 	</select>
 
 
@@ -58,8 +58,10 @@
 	</select>
 
     <!--保存用户信息-->
-    <insert id="save" parameterType="cn.cwnu.modules.sys.entity.SysUserEntity" useGeneratedKeys="true" keyProperty="id">
-
+    <insert id="save" parameterType="cn.cwnu.modules.sys.entity.SysUserEntity"  useGeneratedKeys="true" keyProperty="id">
+          insert into sys_user
+          (`real_name`,`username`,`password`,`mobile`,`status`,`online`,`email`,`work_phone`,`salt`, `address`, `create_time`,`dept_id`,`dept_name`,`identity`,`identity_id`,`company`,`bank`,`bank_num`)
+          value (#{realName},#{username},#{password},#{mobile},#{status},#{online},#{email},#{workPhone},#{salt},#{address},#{createTime},#{deptId},#{deptName},#{identity},#{identityId},#{company},#{bank},#{bankNum})
 	</insert>
 
     <!--数据更新-->
@@ -76,7 +78,7 @@
             <if test="deptName != null">`dept_name` = #{deptName},</if>
             <if test="identity != null">`identity` = #{identity},</if>
             <if test="identityId != null">`identity_id` = #{identityId},</if>
-            <if test="companyName != null">`company_name` = #{companyName},</if>
+            <if test="companyName != null">`company_name` = #{company},</if>
         </set>
         where id = #{id}
     </update>

@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class SysRoleEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
 	/**
 	 * 角色ID
 	 */

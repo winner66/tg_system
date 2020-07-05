@@ -1,10 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
     <title>特约投稿 - 任务列表</title>
-</head>
-<body>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="../../libs/jquery.min.js"></script>
+    <script src="../../libs/vue.min.js"></script>
 
+    <script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+    <!--layui-v2.5.5-->
+    <link rel="stylesheet" href="../../plugins/layui-v2.5.5/layui/css/layui.css" media="all">
+    <script src="../../plugins/layui-v2.5.5/layui/layui.all.js" charset="utf-8"></script>
+    <script src="../../plugins/layui-v2.5.5/layui/layui.js"></script>
+    <!--layer-v3.1.1-->
+    <script src="../../plugins/layer-v3.1.1/layer/layer.js" charset="utf-8"></script>
+    <!--laydate-v5.0.9-->
+    <link rel="stylesheet" href="../../plugins/layDate-v5.0.9/laydate/theme/default/laydate.css">
+    <script src="../../plugins/layDate-v5.0.9/laydate/laydate.js" charset="utf-8"></script>
+    <!--bootstrap-3.3.7-->
+    <link rel="stylesheet" href="../../plugins/bootstrap-3.3.7-dist/css/bootstrap.css" media="all">
+    <script src="../../plugins/bootstrap-3.3.7-dist/js/bootstrap.js" charset="utf-8"></script>
+    <!--<style>-->
+    <!--.layui-tab-title li{-->
+    <!--display: block;-->
+    <!--}-->
+    <!--.layui-tab-title{-->
+    <!--float: left;-->
+    <!--width: 25%;-->
+    <!--}-->
+    <!--.layui-tab-content{-->
+    <!--float: left;-->
+    <!--width: 70%;-->
+    <!--}-->
+    <!--</style>-->
+</head>
+
+<body>
+<blockquote class="layui-elem-quote layui-text">
+    特约投稿-任务列表
+</blockquote>
+<div id="app">
+    <div class="layui-row">
+        <div class="layui-col-xs3">
+            <div class="grid-demo grid-demo-bg1">
+                <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="demo" style="width: 90%; margin-right: 10px;">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">分类</a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" v-on:click="change(0)">全部
+                                    <button class="layui-btn  layui-btn-xs" v-on:click="addTab"><i class="layui-icon"></i></button>
+                                </a>
+                            </dd>
+                            <dd v-for="site in sites" >
+                                <a href="javascript:;" v-on:click="change(site.buSptid)">{{site.buSptname}}
+                                    <div class="layui-btn-group">
+                                        <button class="layui-btn  layui-btn-xs layui-btn-normal" v-on:click="updataTab(site.buSptid)"><i class="layui-icon"></i></button>
+                                        <button class="layui-btn  layui-btn-xs layui-btn-danger" v-on:click="delTab(site.buSptid)"><i class="layui-icon"></i></button>
+                                    </div>
+                                </a>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-col-xs9">
+            <div class="grid-demo">
+                <form class="layui-form" action="">
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" placeholder="任务名称" class="layui-input">
+                    </div>
+                    <div class="layui-input-inline ">
+                        <select name="modules">
+                            <option value="">全部状态</option>
+                            <option value="">已发布</option>
+                            <option value="">已结束</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="date1" placeholder="任务发布时间">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="date2" placeholder="任务结束时间">
+                    </div>
+                    <button type="button" class="layui-btn">搜索</button>
+                    <button type="button" class="layui-btn layui-btn-normal" onclick="createNewTask()">创建新任务</button>
+                </form>
+                <table lay-filter="test" id="test"></table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script src="../../js/modules/business/spst.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/autoHeight.js"></script>
 </body>
 </html>

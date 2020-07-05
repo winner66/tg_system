@@ -1,10 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>评论投稿 - 稿件统计</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="../../libs/jquery.min.js"></script>
+    <script src="../../libs/bootstrap.min.js"></script>
+    <script src="../../libs/vue.min.js"></script>
+
+    <script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+    <!--layui-v2.5.5-->
+    <link rel="stylesheet" href="../../plugins/layui-v2.5.5/layui/css/layui.css" media="all">
+    <script src="../../plugins/layui-v2.5.5/layui/layui.all.js" charset="utf-8"></script>
+    <script src="../../plugins/layui-v2.5.5/layui/layui.js"></script>
+
 </head>
 <body>
+<div id="app">
+    <table>
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="site in sites">
+            <td v-text="site.buComtid"></td>
+            <td v-text="site.buComtname"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li lay-status="1" class="layui-this">网站设置</li>
+        <li lay-status="2">用户管理</li>
+        <li lay-status="3">权限分配</li>
+        <li lay-status="4">商品管理</li>
+        <li lay-status="5">订单管理</li>
+    </ul>
+    <div class="layui-tab-content" style="height: 100px;">
+        <div  class="layui-tab-item layui-show"><table id="test1" lay-filter="test"></table></div>
+        <div  class="layui-tab-item"><table id="test2" lay-filter="test"></table></div>
+        <div  class="layui-tab-item"><table id="test3" lay-filter="test"></table></div>
+        <div  class="layui-tab-item"><table id="test4" lay-filter="test"></table></div>
+        <div  class="layui-tab-item"><table id="test5" lay-filter="test"></table></div>
+    </div>
+</div>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script src="../../js/modules/business/manus.js"></script>
+<script src="../../js/common.js"></script>
+<script src="../../js/autoHeight.js"></script>
 </body>
 </html>

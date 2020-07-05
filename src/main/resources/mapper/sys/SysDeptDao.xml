@@ -14,7 +14,7 @@
         <result column="name" jdbcType="VARCHAR" javaType="string" property="title" />
         <result column="parent_id" jdbcType="BIGINT"   javaType="long" property="pid" />
     </resultMap>
-    <select id="queryObjectByParentId"  parameterType="long" resultMap="treeResultMap">
+    <select id="queryObjectByParentId"  parameterType="java.lang.Long" resultType="cn.cwnu.modules.sys.entity.SysDeptEntity">
 		select * from sys_dept where parent_id = #{parentId}
 	</select>
 
@@ -72,7 +72,7 @@
         update sys_dept
         <set>
             <if test="parentId != null">`parent_id` = #{parentId},</if>
-            <if test="name != null">`name` = #{name},</if>
+            <if test="name!= null">`name` = #{name},</if>
             <if test="departNum != null">`depart_num` = #{departNum}</if>
         </set>
         where dept_id = #{deptId}

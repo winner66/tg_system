@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cwnu.modules.business.dao.BuComTaskDao">
+	<!--查询所有的任务-->
+	<select id="queryAllList" resultType="cn.cwnu.modules.business.entity.BuComTaskEntity">
+		select * from bu_comtask
+		<where>
+			<if test="taskname != null and taskname.trim() != ''">
+				and `taskname` like concat('%',#{taskname},'%')
+			</if>
+			<if test="starttime != null and starttime.trim() != ''">
+				and `starttime` &gt;= #{starttime}
+			</if>
+			<if test="endtime != null and endtime.trim() != ''">
+				and `endtime` &lt;= #{endtime}
+			</if>
+		</where>
+	</select>
+	<!--暂停任务-->
+	<update id="stopComtask" parameterType="int">
+		update bu_comtask set taskstatus=1 where id = #{id}
+	</update>
+	<!--删除-->
+	<delete id="deleteComTask">
+        delete from bu_comtask where id = #{id}
+    </delete>
+	<!--查询总量-->
+	<select id="queryAll" resultType="int">
+        select count(*) from bu_comtask
+		<where>
+			<choose>
+				<when test="_parameter  != null and _parameter  != 0" >
+					tag = #{tag}
+				</when>
+			</choose>
+		</where>
+    </select>
+	<!--根据id查询-->
+	<select id="queryById" resultType="cn.cwnu.modules.business.entity.BuComTaskEntity">
+        select*from bu_comtask where id=#{id}
+    </select>
+	<!--分页-->
+	<select id="pageList" resultType="cn.cwnu.modules.business.entity.BuComTaskEntity">
+		select * from bu_comtask
+		<where>
+		<choose>
+			<when test="tag != null and tag != 0" >
+				tag = #{tag}
+			</when>
+		</choose>
+		</where>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<!--搜索-->
+	<select id="searchList" resultType="cn.cwnu.modules.business.entity.BuComTaskEntity">
+		select * from bu_comtask
+		<where>
+			<if test="tag != null and tag!=0">
+				and `tag` = #{tag}
+			</if>
+			<if test="taskstatus != null and taskstatus!=2">
+				and `taskstatus` = #{taskstatus}
+			</if>
+			<if test="taskname != null and taskname.trim() != ''">
+				and `taskname` like concat('%',#{taskname},'%')
+			</if>
+			<if test="starttime != null and starttime.trim() != ''">
+				and `starttime` &gt;= #{starttime}
+			</if>
+			<if test="endtime != null and endtime.trim() != ''">
+				and `endtime` &lt;= #{endtime}
+			</if>
+		</where>
+		<if test="offset != null and limit != null and limit!=0">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	<!--查询最大的id值-->
+	<select id="queryMaxId" resultType="int">
+		select max(id) from bu_comtask
+	</select>
+	<!--修改-->
+	<update id="updateComtask" parameterType="cn.cwnu.modules.business.entity.BuComTaskEntity">
+		update bu_comtask
+		<set>
+			<if test="fabup != null">`fabup` = #{fabup}, </if>
+			<if test="countj != null">`countj` = #{countj}, </if>
+			<if test="countf != null">`countf` = #{countf}, </if>
+			<if test="counte != null">`counte` = #{counte}, </if>
+			<if test="taskname != null">`taskname` = #{taskname},</if>
+			<if test="createtime != null">`createtime` = #{createtime}, </if>
+			<if test="starttime != null">`starttime` = #{starttime}, </if>
+			<if test="endtime != null">`endtime` = #{endtime}, </if>
+			<if test="pertoplimit != null">`pertoplimit` = #{pertoplimit}, </if>
+			<if test="taskbelimit != null">`taskbelimit` = #{taskbelimit}, </if>
+			<if test="reward != null">`reward` = #{reward}, </if>
+			<if test="taskreq != null">`taskreq` = #{taskreq},</if>
+			<if test="filename != null">`filename` = #{filename}, </if>
+			<if test="titlex != null">`titlex` = #{titlex}, </if>
+			<if test="titleb != null">`titleb` = #{titleb}, </if>
+			<if test="hrefx != null">`hrefx` = #{hrefx}, </if>
+			<if test="hrefb != null">`hrefb` = #{hrefb}, </if>
+			<if test="contentx != null">`contentx` = #{contentx}, </if>
+			<if test="contentb != null">`contentb` = #{contentb},</if>
+			<if test="filex != null">`filex` = #{filex}, </if>
+			<if test="fileb != null">`fileb` = #{fileb}, </if>
+			<if test="majiax != null">`majiax` = #{majiax}, </if>
+			<if test="majiab != null">`majiab` = #{majiab},</if>
+			<if test="taskstatus != null">`taskstatus` = #{taskstatus}</if>
+		</set>
+		where id = #{id}
+	</update>
+    <!--增加-->
+    <insert id="addComTask" parameterType="cn.cwnu.modules.business.entity.BuComTaskEntity">
+        insert into bu_comtask
+		(
+			`bid`,
+			`tag`,
+			`fabup`,
+			`countj`,
+			`countf`,
+			`counte`,
+			`taskname`,
+			`createtime`,
+			`starttime`,
+			`endtime`,
+			`pertoplimit`,
+			`taskbelimit`,
+			`reward`,
+			`taskreq`,
+			`filename`,
+			`titlex`,
+			`titleb`,
+			`hrefx`,
+			`hrefb`,
+			`contentx`,
+			`contentb`,
+			`filex`,
+			`fileb`,
+			`majiax`,
+			`majiab`,
+			`taskstatus`,
+			`orgbelimit`,
+			`orgtoplimit`
+		)
+		values
+		(
+			#{bid},
+			#{tag},
+			#{fabup},
+			#{countj},
+			#{countf},
+			#{counte},
+			#{taskname},
+			#{createtime},
+			#{starttime},
+			#{endtime},
+			#{pertoplimit},
+			#{taskbelimit},
+			#{reward},
+			#{taskreq},
+			#{filename},
+			#{titlex},
+			#{titleb},
+			#{hrefx},
+			#{hrefb},
+			#{contentx},
+			#{contentb},
+			#{filex},
+			#{fileb},
+			#{majiax},
+			#{majiab},
+			#{taskstatus},
+			#{orgbelimit},
+			#{orgtoplimit}
+		)
+	</insert>
+</mapper>

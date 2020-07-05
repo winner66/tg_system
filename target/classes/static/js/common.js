@@ -26,6 +26,12 @@ var token = localStorage.getItem("token");
 if (token == 'null') {
     parent.location.href = baseURL + 'login.html';
 }
+//用户机构
+var userInfo= localStorage.getItem("userInfo");
+var userInfo=JSON.parse(userInfo)
+
+
+
 
 //jquery全局配置
 $.ajaxSetup({

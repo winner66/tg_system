@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.cwnu.modules.business.dao.BuComTagDao">
+    <!--查询所有数据-->
+    <select id="queryList" resultType="cn.cwnu.modules.business.entity.BuComTagEntity">
+        select*from bu_comtag
+    </select>
+
+    <select id="queryById" resultType="String">
+        select buComtname from bu_comtag where buComtid=#{buComtid}
+    </select>
+
+    <select id="queryLists" parameterType="map" resultType="cn.cwnu.modules.business.entity.BuComTagEntity">
+        select * from bu_comtag limit #{offset},#{limit}
+    </select>
+
+    <!--查询数量-->
+    <select id="queryAll" resultType="int">
+		select count(*) from bu_comtag
+	</select>
+
+    <!--更新-->
+    <update id="updateComTag" parameterType="cn.cwnu.modules.business.entity.BuComTagEntity">
+        update bu_comtag
+        <set>
+            <if test="buComtname != null"> buComtname = #{buComtname}</if>
+        </set>
+        where buComtid = #{buComtid}
+    </update>
+
+    <!--删除-->
+    <delete id="deleteComTag">
+        delete from bu_comtag where buComtid = #{buComtid}
+    </delete>
+
+    <!--是否可以新增-->
+    <select id="canAdd" resultType="cn.cwnu.modules.business.entity.BuComTagEntity">
+        select*from bu_comtag where buComtname like #{buComtname}
+    </select>
+
+    <!--增加-->
+    <insert id="addComTag" parameterType="cn.cwnu.modules.business.entity.BuComTagEntity">
+		insert into bu_comtag(buComtname) values(#{buComtname})
+	</insert>
+
+</mapper>

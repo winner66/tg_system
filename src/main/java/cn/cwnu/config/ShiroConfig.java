@@ -66,7 +66,15 @@ public class ShiroConfig {
         filterMap.put("/plugins/**", "anon");
         filterMap.put("/favicon.ico", "anon");
         filterMap.put("/", "anon");
+
+
+        filterMap.put("/swagger-ui.html", "anon");
+        filterMap.put("/swagger-resources", "anon");
+        filterMap.put("/v2/api-docs", "anon");
+        filterMap.put("/webjars/springfox-swagger-ui/**", "anon");
+
         filterMap.put("/**", "oauth2");
+
         shiroFilter.setFilterChainDefinitionMap(filterMap);
 
         return shiroFilter;

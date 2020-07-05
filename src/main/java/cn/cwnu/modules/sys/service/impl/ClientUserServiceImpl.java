@@ -2,13 +2,16 @@ package cn.cwnu.modules.sys.service.impl;
 
 import cn.cwnu.common.utils.ReadExcelUtils;
 import cn.cwnu.modules.sys.dao.ClientUserDao;
+import cn.cwnu.modules.sys.dao.SysGroupDao;
 import cn.cwnu.modules.sys.entity.ClientUserEntity;
+import cn.cwnu.modules.sys.entity.SysGroupEntity;
 import cn.cwnu.modules.sys.service.ClientUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +23,7 @@ import java.util.List;
 public class ClientUserServiceImpl implements ClientUserService {
     @Autowired
     private ClientUserDao clientUserDao;
+    private SysGroupDao sysGroupDao;
 
     /**
      * 查询所有客户端用户信息
@@ -34,7 +38,6 @@ public class ClientUserServiceImpl implements ClientUserService {
         }
         return clientUserDao.queryInfoList(searchText);
     }
-
     /**
      * 批量保存
      *
@@ -59,9 +62,60 @@ public class ClientUserServiceImpl implements ClientUserService {
      */
     @Override
     public void save(ClientUserEntity entity) {
-       // clientUserDao.save(entity);
+
+//        entity.setLoginTime();
+        clientUserDao.save(entity);
     }
 
+    @Override
+    public List<ClientUserEntity> queryByGroup(Long id) {
+        List<ClientUserEntity> resust;
+//        当前组的人员
+        resust= clientUserDao.queryByGroup(id);
+//        下属组的人员
+        System.out.println(id);
+
+        List<SysGroupEntity> groups = sysGroupDao.queryGroupByPGid(id);
+        System.out.println(groups.size());
+        List<ClientUserEntity> group2List=queryGroup(groups);
+        resust.addAll(group2List);
+        return resust;
+    }
+    private List<ClientUserEntity> queryGroup(List<SysGroupEntity> groups){
+        List<ClientUserEntity> resust= new ArrayList<ClientUserEntity>();
+        for (SysGroupEntity id:groups){
+            List<ClientUserEntity> list;
+            list= clientUserDao.queryByGroup(id.getGroupId());
+            resust.addAll(list);
+//            下属组de下属组的人员
+            List<SysGroupEntity> groups2= sysGroupDao.queryGroupByPGid(id.getGroupId());
+            List<ClientUserEntity> group2List=queryGroup(groups2);
+            resust.addAll(group2List);
+        }
+
+        return resust;
+    }
+
+//通过查询 机构人员再查询 组成员
+    @Override
+    public List<ClientUserEntity> queryByDept(Long id) {
+        List<ClientUserEntity> resust;
+//       当前机构
+        resust= clientUserDao.queryByDept(id);
+
+//        机构下的组
+        List<SysGroupEntity> groups= sysGroupDao.queryGroupByDid(id);
+
+        List<ClientUserEntity> group2List=queryGroup(groups);
+        resust.addAll(group2List);
+        return resust;
+    }
+//    queryAllByDept
+//直接查询 机构下的人员
+@Override
+    public List<ClientUserEntity> queryAllByDept(Long id){
+        return clientUserDao.queryAllByDept(id);
+    }
     /**
      * 删除数据
      *

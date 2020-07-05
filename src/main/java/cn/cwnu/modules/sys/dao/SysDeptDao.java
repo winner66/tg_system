@@ -25,7 +25,7 @@ public interface SysDeptDao extends BaseDao<SysDeptEntity> {
      */
     List<Long> queryDetpIdList(Long parentId);
 
-    List<organizationTree> queryObjectByParentId(Long parentId);
+    List<SysDeptEntity> queryObjectByParentId(Long parentId);
     /**
      * 查询子机构数量
      *

@@ -73,7 +73,8 @@ var vm = new Vue({
             deptId: null,
             deptName: null,
             identity: null,
-            roleIdList: []
+
+            roleIdList: [2]
         }
     },
     methods: {
@@ -84,7 +85,8 @@ var vm = new Vue({
             vm.showList = false;
             vm.title = "新增";
             vm.roleList = {};
-            vm.user = {deptName: null, deptId: null, status: 1, roleIdList: []};
+            //默认区域管理员
+            vm.user = {deptName: null, deptId: null, status: 1, roleIdList: [2]};
             //获取角色信息
             vm.getRoleList();
             vm.getDept();
@@ -188,6 +190,9 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function () {
+            vm.user.roleIdList=[2];
+            console.log(vm.user);
+
             var url = vm.user.id == null ? "sys/user/save" : "sys/user/update";
             $.ajax({
                 type: "POST",

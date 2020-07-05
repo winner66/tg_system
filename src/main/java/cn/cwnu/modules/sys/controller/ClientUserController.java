@@ -1,16 +1,22 @@
 package cn.cwnu.modules.sys.controller;
 
 import cn.cwnu.common.annotation.SysLog;
+import cn.cwnu.common.utils.Constant;
+import cn.cwnu.common.utils.DateUtils;
 import cn.cwnu.common.utils.R;
 
 import cn.cwnu.modules.sys.entity.ClientUserEntity;
 import cn.cwnu.modules.sys.service.ClientUserService;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.RandomStringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,7 +27,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/sys/clientUser")
 public class ClientUserController {
-
     @Autowired
     private ClientUserService clientUserService;
 
@@ -37,6 +42,36 @@ public class ClientUserController {
         //获取列表数据
         List<ClientUserEntity> clientUserList = clientUserService.queryList(searchText);
         //封装json对象返回,bootstrap-table client分页方式需要data字符
+        JSONObject result = new JSONObject();
+        result.put("code", 0);
+        result.put("msg", "");
+        result.put("data", clientUserList);
+        result.put("count", clientUserList.size());
+        return result.toJSONString();
+    }
+
+    @PostMapping("/listByDept/{id}")
+    @RequiresPermissions("sys:clientUser:list")
+    public String queryByDept(@PathVariable("id") Long id) {
+        //获取列表数据
+        List<ClientUserEntity> clientUserList = clientUserService.queryAllByDept(id);
+        //封装json对象返回,bootstrap-table client分页方式需要data字符
+        System.out.println(id+clientUserList.size());
+        JSONObject result = new JSONObject();
+        result.put("code", 0);
+        result.put("msg", "");
+        result.put("data", clientUserList);
+        result.put("count", clientUserList.size());
+        return result.toJSONString();
+    }
+    @PostMapping("/listByGroup/{id}")
+    @RequiresPermissions("sys:clientUser:list")
+    public String queryByGroup(@PathVariable("id") Long id) {
+        //获取列表数据
+        List<ClientUserEntity> clientUserList = clientUserService.queryByGroup(id);
+        //封装json对象返回,bootstrap-table client分页方式需要data字符
+
+        System.out.println(id+clientUserList.size());
         JSONObject result = new JSONObject();
         result.put("code", 0);
         result.put("msg", "");
@@ -77,8 +112,16 @@ public class ClientUserController {
      * @return
      */
     @PostMapping("/save")
-    @RequiresPermissions("sys:clientUser:add")
+//    @RequiresPermissions("sys:clientUser:add")
     public R save(@RequestBody ClientUserEntity entity) {
+        String time =DateUtils.formatDate(new Date());
+        entity.setCreateTime(time);
+        entity.setUpdateTime(time);
+        entity.setLoginTime(time);
+        //sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(Constant.SALT_LENGTH);
+        entity.setPassword(new Sha256Hash(entity.getPassword(), salt).toHex());
+        entity.setSalt(salt);
         clientUserService.save(entity);
         return R.ok();
     }
@@ -92,7 +135,7 @@ public class ClientUserController {
      */
     @SysLog("用户删除")
     @PostMapping("/delete/{id}")
-    @RequiresPermissions("sys:clientUser:delete")
+//    @RequiresPermissions("sys:clientUser:delete")
     public R delete(@PathVariable Integer id) {
         clientUserService.delete(id);
         return R.ok();
