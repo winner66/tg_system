@@ -115,12 +115,10 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserDao.updatePassword(map);
     }
 
-    /**
-     * 禁用用户
-     *
-     * @param userIds
-     * @return
-     */
+    @Override
+    public int delete(Integer id){
+        return  sysUserDao.delete(id);
+    }
     @Override
     @Transactional(rollbackFor = RRException.class)
     public void banBatch(Integer[] userIds) {

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.cwnu.modules.sys.dao.SysGroupDao">
     <select id="queryObject" resultType="cn.cwnu.modules.sys.entity.SysGroupEntity">
-		select * from sys_group where group_id = #{value}
+		select * from `sys_group` where `group_id` = #{value}
 	</select>
     <resultMap id="treeResultMap" type="cn.cwnu.modules.sys.entity.organizationTree">
         <!-- 用id属性来映射主键字段 -->
@@ -13,12 +13,12 @@
     </resultMap>
 
     <select id="queryObjectByDeptId"  parameterType="java.lang.Long" resultType="cn.cwnu.modules.sys.entity.SysGroupEntity">
-		select * from sys_group where dept_id = #{deptId}
+		select * from `sys_group` where `dept_id` = #{deptId}
 	</select>
 
     <insert id="save" parameterType="cn.cwnu.modules.sys.entity.SysGroupEntity" useGeneratedKeys="true"
             keyProperty="group_id">
-        INSERT INTO sys_group (`pre_group_id`, `dept_id`, `group_name`)
+        INSERT INTO `sys_group` (`pre_group_id`, `dept_id`, `group_name`)
         VALUES (#{preGroupId}, #{deptId}, #{groupName})
 	</insert>
 
@@ -40,36 +40,36 @@
     </insert>
 
     <update id="updateName" parameterType="cn.cwnu.modules.sys.entity.SysGroupEntity" >
-       update sys_group
+       update `sys_group`
         <set>
             <if test="groupName != null">`group_name` = #{groupName}</if>
         </set>
-        where group_id = #{groupId}
+        where `group_id` = #{groupId}
 	</update>
 
 
 
     <select id="queryDeptByGid"  parameterType="java.lang.Long"  resultType="cn.cwnu.modules.sys.entity.SysGroupEntity">
-				select * from sys_group where group_id= #{deptId}
+				select * from `sys_group` where `group_id`= #{deptId}
 	</select>
 
     <select id="queryGroupByDid" parameterType="java.lang.Long"  resultType="cn.cwnu.modules.sys.entity.SysGroupEntity">
-		select * from sys_group where dept_id  = #{pid} and pre_group_id =0
+		select * from `sys_group` where `dept_id`  = #{pid} and `pre_group_id` =0
 	</select>
 
     <select id="queryGroupByPGid" parameterType="java.lang.Long" resultType="cn.cwnu.modules.sys.entity.SysGroupEntity">
-		select * from sys_group where pre_group_id = #{deptId}
+		select * from `sys_group` where `pre_group_id` = #{deptId}
 	</select>
 
     <select id="countGroupIdList" parameterType="java.lang.Integer" resultType="int">
-		select count(*) from sys_group where group_id = #{value}
+		select count(*) from `sys_group` where `group_id` = #{value}
 	</select>
 
     <select id="queryTotal" resultType="int">
-        select count(*) from sys_group
+        select count(*) from `sys_group`
     </select>
     <delete id="delete"  parameterType="java.lang.Long">
-        delete  from sys_group where  group_id=#{value}
+        delete  from `sys_group` where  `group_id`=#{value}
     </delete>
 
 

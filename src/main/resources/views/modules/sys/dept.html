@@ -67,7 +67,11 @@
         </div>
     </div>
     <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
-        <table class="layui-hide" id="test" lay-filter="test"></table>
+        <div class="grid-demo">
+            <table class="layui-hide" id="test" lay-filter="test"></table>
+        </div>
+    </div>
+
     </div>
 </div>
 <div id="from_add" v-if="!show_add">
@@ -91,15 +95,15 @@
             </label>
         </div>
         <div class="form-group">
-            <div class="col-sm-2 control-label">用户姓名(马甲)</div>
+            <div class="col-sm-2 control-label">用户姓名</div>
             <div class="col-sm-10">
-                <input type="text" class="form-control  "name="realName" id="realName" placeholder="用户姓名"/>
+                <input type="text" class="form-control  "name="username" id="username" placeholder="用户姓名"/>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-2 control-label">登录账号</div>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="username" id="username" placeholder="登录账号"/>
+                <input type="text" class="form-control" name="account" id="account" placeholder="登录账号"/>
             </div>
         </div>
         <div class="form-group">

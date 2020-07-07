@@ -7,7 +7,9 @@ import cn.cwnu.common.utils.R;
 
 import cn.cwnu.modules.sys.entity.ClientUserEntity;
 import cn.cwnu.modules.sys.service.ClientUserService;
+import cn.cwnu.modules.sys.service.ClientUserTokenService;
 import com.alibaba.fastjson.JSONObject;
+import net.sf.json.JSONSerializer;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -26,16 +28,68 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/clientUser")
-public class ClientUserController {
+public class ClientUserController extends AbstractController {
     @Autowired
     private ClientUserService clientUserService;
 
-    /**
-     * 查询所有客户端用户信息
-     *
-     * @param searchText 查询条件
-     * @return
-     */
+    @Autowired
+    private ClientUserTokenService clientUserTokenService;
+
+    @PostMapping("/login")
+    public R login(@RequestParam("name")String name,@RequestParam("passwd")String pswd){
+     ClientUserEntity clientUserEntity;
+        try {
+            clientUserEntity = clientUserService.queryByAccount(name);
+            String time =DateUtils.formatDate(new Date());
+            clientUserEntity.setLoginTime(time);
+            clientUserService.update(clientUserEntity);
+        } catch (Exception e) {
+            return R.error("数据操作失败");
+        }
+        if (null ==  clientUserEntity) {
+            return R.error("用户不存在");
+        }
+        if (! clientUserEntity.getPassword().equals(new Sha256Hash(pswd,  clientUserEntity.getSalt()).toHex())) {
+            return R.error("密码不正确");
+        }
+        //生成token，并保存到数据库
+        R r = clientUserTokenService.createToken( clientUserEntity.getId());
+        //客户端对象转为json
+        String str = JSONSerializer.toJSON(clientUserEntity).toString();
+        return R.ok().put("userInfo", str).put("userToken", r);
+    }
+//    验证账号是否重复
+    @PostMapping("/accountVail")
+    public R accountVail(String account){
+        ClientUserEntity clientUserEntity;
+        clientUserEntity = clientUserService.queryByAccount(account);
+        if(clientUserEntity!=null){
+            R.error("登录账号重新，请重新输入");
+        }
+        return R.ok();
+
+    }
+
+//    评论投稿
+    @PostMapping("/comtalk/{id}")
+    public R comtalk( @PathVariable("id") Long id){
+
+        return R.ok();
+    }
+//    特约投稿
+    @PostMapping("/sp/{id}")
+    public R getspByid(@PathVariable("id") Long id) {
+
+        return R.ok();
+    }
+
+
+        /**
+         * 查询所有客户端用户信息
+         *
+         * @param searchText 查询条件
+         * @return
+         */
     @PostMapping("/list")
     @RequiresPermissions("sys:clientUser:list")
     public String defaultList(String searchText) {
@@ -126,7 +180,36 @@ public class ClientUserController {
         return R.ok();
     }
 
+    @PostMapping("/update")
+//    @RequiresPermissions("sys:clientUser:update")
+    public R update(@RequestBody ClientUserEntity entity){
+        String time =DateUtils.formatDate(new Date());
+        entity.setUpdateTime(time);
+        entity.setLoginTime(time);
 
+        clientUserService.update(entity);
+        return R.ok();
+    }
+    @PostMapping("/password")
+    public R rePSWD(String password, String newPassword){
+        //sha256加密
+        password = new Sha256Hash(password, getUser().getSalt()).toHex();
+        //sha256加密
+        newPassword = new Sha256Hash(newPassword, getUser().getSalt()).toHex();
+        //更新密码
+        int count = clientUserService.updatePassword(getUserId(), password, newPassword);
+        if (count == 0) {
+            return R.error("原密码不正确");
+        }
+        return R.ok();
+
+    }
+    @PostMapping("/getInfoByid/{id}")
+    public R getInfoByid(@PathVariable("id") String id){
+        ClientUserEntity clientUserEntity = clientUserService.queryByid(id);
+        String str = JSONSerializer.toJSON(clientUserEntity).toString();
+        return R.ok().put("Info",str);
+    }
     /**
      * 删除
      *
@@ -136,9 +219,9 @@ public class ClientUserController {
     @SysLog("用户删除")
     @PostMapping("/delete/{id}")
 //    @RequiresPermissions("sys:clientUser:delete")
-    public R delete(@PathVariable Integer id) {
-        clientUserService.delete(id);
-        return R.ok();
+    public R delete(@PathVariable("id") Integer id) {
+        int count=clientUserService.delete(id);
+        return R.ok().put("count",count);
     }
 
     /**

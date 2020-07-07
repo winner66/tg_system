@@ -1,6 +1,7 @@
 package cn.cwnu.modules.sys.service;
 
 import cn.cwnu.modules.sys.entity.ClientUserEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -24,6 +25,12 @@ public interface ClientUserService {
 
     List<ClientUserEntity> queryByDept(Long id);
     List<ClientUserEntity> queryAllByDept(Long id);
+    //通过账号查询
+    ClientUserEntity queryByAccount(String account);
+
+    ClientUserEntity queryByid(String id);
+    ClientUserEntity update(ClientUserEntity entity);
+    int updatePassword(Integer userId, String password, String newPassword);
     /**
      * 批量保存
      *
@@ -45,7 +52,7 @@ public interface ClientUserService {
      * @param id
      */
 
-    void delete(Integer id);
+    int delete(Integer id);
 
     /**
      * 禁用用户

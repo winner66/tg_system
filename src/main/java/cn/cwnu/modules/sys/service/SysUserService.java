@@ -66,6 +66,8 @@ public interface SysUserService {
      */
     int updatePassword(Integer userId, String password, String newPassword);
 
+
+    int delete(Integer id);
     /**
      * 禁用用户
      *

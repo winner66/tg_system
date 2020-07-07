@@ -13,12 +13,10 @@ import java.util.Date;
 
 @Service("sysUserTokenService")
 public class SysUserTokenServiceImpl implements SysUserTokenService {
-
 	@Autowired
 	private SysUserTokenDao sysUserTokenDao;
 	//1小时后过期
 	private final static int EXPIRE = 3600 * 1;
-
 	@Override
 	public SysUserTokenEntity queryByUserId(Long userId) {
 		return sysUserTokenDao.queryByUserId(userId);
@@ -55,7 +53,6 @@ public class SysUserTokenServiceImpl implements SysUserTokenService {
 			tokenEntity.setToken(token);
 			tokenEntity.setUpdateTime(now);
 			tokenEntity.setExpireTime(expireTime);
-
 			//保存token
 			save(tokenEntity);
 		}else{

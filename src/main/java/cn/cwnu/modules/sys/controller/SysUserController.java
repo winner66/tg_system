@@ -62,6 +62,7 @@ public class SysUserController extends AbstractController {
      */
     @RequestMapping("/info")
     public R info() {
+//        传入token
         return R.ok().put("user", getUser());
     }
 

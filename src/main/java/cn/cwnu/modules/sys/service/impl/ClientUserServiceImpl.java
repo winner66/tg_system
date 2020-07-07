@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 人员管理
@@ -66,6 +68,10 @@ public class ClientUserServiceImpl implements ClientUserService {
 //        entity.setLoginTime();
         clientUserDao.save(entity);
     }
+    @Override
+    public ClientUserEntity queryByAccount(String account){
+        return  clientUserDao.queryByAccount(account);
+    }
 
     @Override
     public List<ClientUserEntity> queryByGroup(Long id) {
@@ -112,7 +118,30 @@ public class ClientUserServiceImpl implements ClientUserService {
     }
 //    queryAllByDept
 //直接查询 机构下的人员
-@Override
+
+
+    @Override
+    public ClientUserEntity queryByid(String id) {
+        return clientUserDao.queryByid(id);
+    }
+
+    @Override
+    public ClientUserEntity update(ClientUserEntity entity) {
+
+        return clientUserDao.update(entity);
+    }
+
+    @Override
+    public int updatePassword(Integer userId, String password, String newPassword) {
+//        默认错误
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("password", password);
+        map.put("newPassword", newPassword);
+        return clientUserDao.updatePassword(map);
+    }
+
+    @Override
     public List<ClientUserEntity> queryAllByDept(Long id){
         return clientUserDao.queryAllByDept(id);
     }
@@ -122,8 +151,8 @@ public class ClientUserServiceImpl implements ClientUserService {
      * @param id
      */
     @Override
-    public void delete(Integer id) {
-        //clientUserDao.delete(id);
+    public int delete(Integer id) {
+        return clientUserDao.delete(id);
     }
 
     /**

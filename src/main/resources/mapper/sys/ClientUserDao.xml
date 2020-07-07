@@ -11,18 +11,22 @@
         </if>
         ORDER BY id DESC
     </select>
+    <select id="queryByAccount"  parameterType="java.lang.String" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
+         select * from  `client_user`
+         where account=#{account}
+    </select>
     <select id="queryByGroup" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
-        select * from `client_user`
+        select *  from  `client_user`
         where type=0 and groupId= #{gid}
     </select>
 <!--机构下的人-->
     <select id="queryByDept" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
-        select * from `client_user`
+        select *  from  `client_user`
         where type=1 and deptId= #{id}
     </select>
 <!--机构下所有人-->
     <select id="queryAllByDept" resultType="cn.cwnu.modules.sys.entity.ClientUserEntity">
-        select * from `client_user`
+        select *  from  `client_user`
         where deptId= #{id}
     </select>
     <!--数据批量保存-->
@@ -39,14 +43,52 @@
     <insert id="save" parameterType="cn.cwnu.modules.sys.entity.ClientUserEntity" useGeneratedKeys="true">
          INSERT INTO `client_user`
         (`username`, `realname`, `account`, `password`,`salt`,
-         `status`, `create_time`,`update_time`,`login_time`,`remarks`,`phone`,
-         `groupId`,`dept`,`level`,`sex`,`email`,`bank`,`bank_num`,`address`,`type`,`deptId`)
+         `status`, `create_time`,`update_time`,`login_time`,`remarks`,
+         `phone`, `groupId`,`dept`,`level`,`sex`,
+         `email`,`bank`,`bank_num`,`address`,`type`,`deptId`)
         VALUES(#{username},#{realname},#{account},#{password},#{salt},
         #{status},#{createTime},#{updateTime},#{loginTime},#{remarks},#{phone},
         #{groupId},#{dept},#{level},#{sex},#{email},#{bank},#{bankNum},#{address},#{type},#{deptId})
     </insert>
 
+    <update id="update" parameterType="cn.cwnu.modules.sys.entity.ClientUserEntity">
+        update `client_user`
+        <set>
+            <if test="realName != null">`username` = #{username},</if>
+            <if test="username != null">`realname` = #{realname},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="mobile != null">`phone` = #{phone},</if>
+            <if test="status != null">`status` = #{status},</if>
 
+            <if test="online != null">`level` = #{level},</if>
+            <if test="deptId != null">`deptId` = #{deptId},</if>
+            <if test="deptName != null">`dept` = #{dept},</if>
+            <if test="identity != null">`salt` = #{salt},</if>
+            <if test="identityId != null">`remarks` = #{remarks},</if>
+
+            <if test="mobile != null">`create_time` = #{createTime},</if>
+            <if test="status != null">`update_time` = #{updateTime},</if>
+            <if test="online != null">`login_time` = #{loginTime},</if>
+            <if test="deptId != null">`groupId` = #{groupId},</if>
+            <if test="deptName != null">`sex` = #{sex},</if>
+            <if test="identity != null">`email` = #{email},</if>
+            <if test="identityId != null">`bank` = #{bank},</if>
+            <if test="companyName != null">`bank_num` = #{bank_num},</if>
+            <if test="deptName != null">`address` = #{address},</if>
+            <if test="identity != null">`type` = #{type},</if>
+            <if test="identity != null">`account` = #{account},</if>
+
+        </set>
+        where id = #{id}
+    </update>
+    <select id="queryByid">
+         select *  from  `client_user`
+        where  id= #{id}
+    </select>
+    <update id="updatePassword" parameterType="map">
+		update client_user set `password` = #{newPassword}
+			where id = #{id} and password = #{password}
+	</update>
 
     <!--删除数据-->
     <delete id="delete">

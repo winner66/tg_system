@@ -21,7 +21,7 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
      * @param userId 用户ID
      */
     List<String> queryAllPerms(Integer userId);
-
+    int delete(Integer id);
     /**
      * 查询用户的所有菜单ID
      */

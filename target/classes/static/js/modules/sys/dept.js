@@ -139,8 +139,9 @@ layui.use(['table','layer','tree', 'util'], function(){
         ,cols: [[
             {type: 'checkbox', fixed: 'left' ,unresize: true, sort: true, totalRowText: '合计'},
             {title: '用户ID', field: 'id', width: 100,fixed: 'left',totalRow: true },
-            {title: '真实姓名', field: 'realname',  edit: 'text' ,width: 100},
-            {title: '登录账号', field: 'username', edit: 'text',width: 100},
+            {title: '真实姓名', field: 'username',  edit: 'text' ,width: 100},
+            {title: '马甲', field: 'realname',  edit: 'text' ,width: 100},
+            {title: '登录账号', field: 'account', edit: 'text',width: 100},
             {title: '手机号码', field: 'mobile',edit: 'text', width:100},
             {title: '邮箱', field: 'email', edit: 'text', templet: function(res){
                     return '<em>'+ res.email +'</em>'
@@ -151,10 +152,13 @@ layui.use(['table','layer','tree', 'util'], function(){
             {title: '创建时间', field: 'createTime',edit: 'text',  width: 100},
             // {title: '是否会员', field: 'isvip',edit: 'text',  width: 100},
             // {title: '会员服务期', field: 'createTime',edit: 'text',  width: 100},
-            {title: '在线状态', field: 'online',edit: 'text', width: 100, templet: function (res) {
-                    return res.online=== 0 ?
-                        '<em>离线</em>' :
-                        '<em>在线</em>';
+            {title: '在线状态', field: 'online',edit: 'text', width: 100,
+                templet: function (res) {
+                  if(res.online== 0){
+                      return '<span style="color:green;">离线</span>'
+                  }else if(res.online= '1') {
+                      return '<span style="color:red;">在线</span>';
+                  }
                 }
             },
             {fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
@@ -165,6 +169,7 @@ layui.use(['table','layer','tree', 'util'], function(){
     //工具栏事件
     table.on('toolbar(test)', function(obj){
         var checkStatus = table.checkStatus(obj.config.id);
+        var data= obj.data;
         switch(obj.event){
             case 'getCheckData':
                 var data = checkStatus.data;
@@ -214,7 +219,7 @@ layui.use(['table','layer','tree', 'util'], function(){
                             sex="女"
                         }
                         var username=$("input[name='username']").val()
-                        var realName=$("input[name='realName']").val()
+                        var account=$("input[name='account']").val()
                         var password=$("input[name='password']").val()
                         var mobile=$("input[name='mobile']").val()
                         var email=$("input[name='email']").val()
@@ -223,10 +228,31 @@ layui.use(['table','layer','tree', 'util'], function(){
                         var bankNum=$("input[name='bankNum']").val()
                         var remarks=$("input[name='remarks']").val()
                         var level=$("input[name='level']").val()
+                        var accountdata={"account":account}
+                        //验证电话号码
+                        if(mobile==""){
+                            layer.msg("请输入电话号码")
+                        }
+                        if(password==""){
+                            layer.msg("请输入登录密码")
+                        }
+                        if(account==""){
+                            layer.msg("请输入登录账号")
+                        }
+                        if(level==""){
+                            level=1;
+                        }
+                        if(username==""){
+                            layer.msg("请输入用户名")
+                        }
                         var data={"status":status,
                             "sex":sex,
+                            //登录名
                             "username":username,
-                            "realname":realName,
+                            //账号
+                            "account":account,
+                            //马甲
+                            // "realname":realName,
                             "password":password,
                             "phone":mobile,
                             "email":email,
@@ -235,44 +261,212 @@ layui.use(['table','layer','tree', 'util'], function(){
                             "bankNum":bankNum,
                             "remarks":remarks,
                             "level":level,
-                        //    从当前的状态获取
+                            //    从当前的状态获取
 
                             "deptId":userInfo.deptId,
                             "dept":userInfo.deptName,
                             //    1: 机构-人员
                             "type":1,
-                        //    组成员
-                        //     "type":0,
-                        //     "groupId"=
+                            //    组成员
+                            //     "type":0,
+                            //     "groupId"=
                         };
                         $.ajax({
                             type: 'POST',
-                            url: baseURL + "sys/clientUser/save",
+                            url: baseURL + "sys/clientUser/accountVail",
                             async: false,
                             // headers: {"token": token},
                             contentType: 'application/json',
                             dataType: 'json',
-                            data: JSON.stringify(data),
+                            data: JSON.stringify(accountdata),
                             success: function (data, status, xhr) {
-                                console.log(data);
-                                layer.close(index);
-                                table.reload('test');
+                                // console.log(data);
+                                // layer.close(index);
+                                //登录名不重复
+                                if(data.code==0){
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: baseURL + "sys/clientUser/save",
+                                        async: false,
+                                        // headers: {"token": token},
+                                        contentType: 'application/json',
+                                        dataType: 'json',
+                                        data: JSON.stringify(data),
+                                        success: function (data, status, xhr) {
+                                            console.log(data);
+                                            layer.close(index);
+                                            table.reload('test');
+                                        },
+                                        error: function (xhr, type) {
+                                            layer.msg("失败")
+                                        }
+                                    })
+                                }
                             },
                             error: function (xhr, type) {
                                 layer.msg("失败")
                             }
-                        })
-                        // console.log(sex);
-
+                        });
                     },
                     btn2: function(){//layer.alert('aaa',{title:'msg title'});  ////点击取消回调
                         // layer.msg('bbb');//layer.closeAll();
                     }
-
                 });
                 break;
+
         };
     });
+    table.on("tool(test)",function (obj) {
+        // var checkStatus = table.checkStatus(obj.config.id);
+        var data= obj.data;
+        switch(obj.event) {
+            case 'edit':
+                $("input[name='status']:checked").val(data.status);
+                $("input[name='sex']:checked").val(data.sex);
+                $("input[name='username']").val(data.username);
+                $("input[name='account']").val(data.account);
+                $("input[name='password']").val(data.password);
+                $("input[name='mobile']").val(data.phone);
+                $("input[name='email']").val(data.email);
+                $("input[name='address']").val(data.address);
+                $("input[name='bank']").val(data.bank);
+                $("input[name='bankNum']").val(data.bankNum);
+                $("input[name='remarks']").val(data.remarks);
+                $("input[name='level']").val(data.level);
+                layer.open({
+                    type: 1
+                    ,title: false //不显示标题栏
+                    ,closeBtn: false
+                    ,area: ['80%','80%']
+                    ,shade: 0.8
+                    ,id: 'LAY_add' //设定一个id，防止重复弹出
+                    ,btn: ['提交', '取消']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: $('#lay_add')
+                    // ,  content: $("#test"),//支持获取DOM元素
+                    ,btn: ['确定', '取消'] //按钮组
+                    ,scrollbar: false //屏蔽浏览器滚动条
+                    ,yes: function(index){//layer.msg('yes');    //点击确定回调
+
+                        // showToast();
+                        var status=$("input[name='status']:checked").val();
+                        var sex=$("input[name='sex']:checked").val();
+                        if(sex==1){
+                            sex="男"
+                        }else{
+                            sex="女"
+                        }
+                        var username=$("input[name='username']").val()
+                        var account=$("input[name='account']").val()
+                        var password=$("input[name='password']").val()
+                        var mobile=$("input[name='mobile']").val()
+                        var email=$("input[name='email']").val()
+                        var address= $("input[name='address']").val()
+                        var bank=$("input[name='bank']").val()
+                        var bankNum=$("input[name='bankNum']").val()
+                        var remarks=$("input[name='remarks']").val()
+                        var level=$("input[name='level']").val()
+
+                        //验证电话号码
+                        if(mobile==""){
+                            layer.msg("请输入电话号码")
+                        }
+                        else if(password==""){
+                            layer.msg("请输入登录密码")
+                        }
+                        else if(account==""){
+                            layer.msg("请输入登录账号")
+                        }
+                        else if(level==""){
+                            level=1;
+                        }
+                        else if(username==""){
+                            layer.msg("请输入用户名")
+                        }else{
+                            ;
+                        }
+                        var data2={"status":status,
+                            "sex":sex,
+                            //登录名
+                            "username":username,
+                            //账号
+                            "account":account,
+                            //马甲
+                            // "realname":realName,
+                            "password":password,
+                            "phone":mobile,
+                            "email":email,
+                            "address":address,
+                            "bank":bank,
+                            "bankNum":bankNum,
+                            "remarks":remarks,
+                            "level":level,
+                            //    从当前的状态获取
+                            "id":data.id,
+
+                        };
+                        var accountdata={"account":account}
+                        $.ajax({
+                            type: 'POST',
+                            url: baseURL + "sys/clientUser/accountVail",
+                            async: false,
+                            // headers: {"token": token},
+                            contentType: 'application/json',
+                            dataType: 'json',
+                            data: JSON.stringify(accountdata),
+                            success: function (data, status, xhr) {
+                                console.log(data);
+
+                                if(data.code==0){
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: baseURL + "sys/clientUser/update",
+                                        async: false,
+                                        contentType: 'application/json',
+                                        dataType: 'json',
+                                        data: JSON.stringify(data),
+                                        success: function (data, status, xhr) {
+                                            console.log(data);
+                                            layer.close(index);
+                                            table.reload('test');
+                                        },
+                                        error: function (xhr, type) {
+                                            layer.msg("失败")
+                                        }
+                                    })
+                                }
+                            },
+                            error: function (xhr, type) {
+                                layer.msg("失败")
+                            }
+                        });
+                    },
+                    btn2: function(){//layer.alert('aaa',{title:'msg title'});  ////点击取消回调
+                        // layer.msg('bbb');//layer.closeAll();
+                    }
+                });
+                break;
+            case 'del':
+                // var data = checkStatus.data;
+                console.log(data);
+                // layer.msg(data);
+                $.post(baseURL + '/sys/clientUser/delete/'+data.id,
+                    function (data) {
+                    console.log(data);
+                    if(parseInt(data.count)==parseInt("1")){
+                        layer.msg('删除成功');
+                        table.reload('test');
+                    }else{
+                        layer.msg('删除失败');
+                        table.reload('test');
+                    }
+                });
+                break;
+        }
+
+
+    })
     var tree = layui.tree
         ,layer = layui.layer
         ,util = layui.util
@@ -280,11 +474,12 @@ layui.use(['table','layer','tree', 'util'], function(){
     util.event('lay-demo', {
         getChecked: function(othis){
             var checkedData = tree.getChecked('demoId1'); //获取选中节点的数据
-            layer.alert(JSON.stringify(checkedData), {shade:0});
-            console.log(checkedData);
+            // layer.alert(JSON.stringify(checkedData), {shade:0});
+            //阔以再  右边得table上操作 -显示 选中得内容
+            // console.log(checkedData);
         }
         ,setChecked: function(){
-            tree.setChecked('demoId1', [12, 16]); //勾选指定节点
+            // tree.setChecked('demoId1', [12, 16]); //勾选指定节点
         }
         ,addDept:function (e) {
 
@@ -299,7 +494,7 @@ layui.use(['table','layer','tree', 'util'], function(){
                 data: JSON.stringify(data),
                 success: function (data, status, xhr) {
                     console.log(data);
-                    tree.reload('demoId1', {data: getData()});
+                    // tree.reload('demoId1', {data: getData()});
                 },
                 error: function (xhr, type) {
                     layer.msg("失败")
@@ -320,7 +515,7 @@ layui.use(['table','layer','tree', 'util'], function(){
                 data: JSON.stringify(data),
                 success: function (data, status, xhr) {
                     console.log(data);
-                    tree.reload('demoId1', {data: getData()});
+                    // tree.reload('demoId1', {data: getData()});
                 },
                 error: function (xhr, type) {
                     layer.msg("失败")
@@ -332,6 +527,7 @@ layui.use(['table','layer','tree', 'util'], function(){
 
         }
         ,
+
         // reload: function(){
         //     //重载实例
         //     tree.reload('demoId1', {
@@ -378,32 +574,7 @@ layui.use(['table','layer','tree', 'util'], function(){
                 layer.msg(+name + JSON.stringify(data.title));
             }
         }
-        // ,function(){
-        //     if(!options.edit) return'';
-        //     var editIcon={
-        //         update:'<i class="layui-icon layui-icon-edit" data-type="update"></i>',
-        //         del:'<i class="layui-icon layui-icon-delete" data-type="del"></i>',
-        //
-        //     };
-        //     if(options.nodeAddLevel>0 && item.rank>options.nodeAddLevel){
-        //         editIcon={
-        //         }
-        //     }
-        //     if(options.nodeDelLevel>0 && item.rank>options.nodeDelLevel){
-        //         editIcon={
-        //         }
-        //     }
-        //     var arr=['<div class="layui_btn-group layui_tree-btnGroup">'];
-        //     if(options.edit===true){
-        //         options.edit=['update','del']
-        //     }
-        //     if(typeof options.edit==='object'){
-        //         layui.each(options.edit,function (i,val) {
-        //             arr.push(editIcon[val]||'');
-        //
-        //         });
-        //     }
-        // }
+
         ,operate: function (obj) {
             var type = obj.type; //得到操作类型：add、edit、del
             var data = obj.data; //得到当前节点的数据

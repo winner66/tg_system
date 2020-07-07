@@ -105,6 +105,9 @@
             #{id}
         </foreach>
     </delete>
+    <delete id="delete" parameterType="java.lang.Integer">
+         delete from sys_user where id = #{value}
+    </delete>
 
     <!--禁用用户-->
     <update id="banBatch">
