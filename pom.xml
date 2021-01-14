@@ -30,7 +30,7 @@
         <kaptcha.version>0.0.9</kaptcha.version>
         <fastjson.version>1.2.15</fastjson.version>
         <sf.json>2.4</sf.json>
-        <poi.version>3.7</poi.version>
+        <poi.version>4.1.2</poi.version>
         <lombok.version>1.16.20</lombok.version>
         <httpcore.version>4.4.13</httpcore.version>
         <validate.version>2.0.1.Final</validate.version>
